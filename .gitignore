@@ -1,0 +1,14 @@
+*.idea
+*/target/*
+*/testdb/*
+
+.vscode/
+.code-workspace
+
+.DS_Store
+*.log
+*.log.lck
+output*.json
+wordcount*.json
+
+!*/evaluation/*

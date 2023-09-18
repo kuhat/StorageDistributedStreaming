@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "workers";
+option java_outer_classname = "DataStreamProto";
+option objc_class_prefix = "DS";
+
+package workers;
+
+service DataStream
+{
+  // stream edges
+  rpc TransferData(DataBatch) returns (Acknowledgement) {}
+  // DAG engine send to worker
+  rpc StallPipeline(ReconfigRequest) returns (ReconfigConfirmation){}
+  rpc ResumePipeline(ReconfigRequest) returns (ReconfigConfirmation){}
+  rpc DrainPipeline(ReconfigRequest) returns (ReconfigConfirmation){}
+  rpc ReconfigRouter(RouterReconfigRequest) returns (ReconfigConfirmation){}
+  rpc StateMigration(AddressToKeyDiff) returns (ReconfigConfirmation){}
+  // state migration
+  rpc SendState(DataBatch) returns (ReconfigConfirmation){}
+}
+service ReconfigDAG
+{
+  // reconfig
+  rpc Reconfig(ReconfigRequest) returns (ReconfigConfirmation){}
+}
+
+message RouterReconfigRequest
+{
+  WorkerInformation workerInfo = 1;
+  ScaleDirection direction = 4;
+}
+
+message AddressToKeyDiff
+{
+  WorkerInformation workerInfo = 1;
+  repeated string key = 2;
+}
+
+message WorkerInformation
+{
+  string operatorType = 1;
+  string workerID = 2;
+  Address address = 3;
+}
+
+message Address
+{
+  string domain = 1;
+  int32 port = 2;
+}
+
+message ScaleDirection
+{
+  int32 request = 1;
+}
+
+message ReconfigRequest
+{
+  string id = 1;
+}
+
+message ReconfigConfirmation
+{
+  string confirm = 1;
+}
+
+message Acknowledgement
+{
+  string confirm = 1;
+}
+message DataStreamRequest
+{
+  string serverLabel = 1;
+}
+
+message DataBatch
+{
+  repeated DataTuple data = 1;
+}
+
+message DataTuple
+{
+  string reconfigRequest = 1;
+  string data = 2;
+  int32 count = 3;
+  // timestamp
+  int64 timestamp = 4;
+}
