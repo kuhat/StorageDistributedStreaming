@@ -36,11 +36,11 @@ Here is an example of the guideline to this project. But you're encouraged to co
 ## How to run
 In IDEA IDE, navigate to 
 
-> team-3b/dataflow/src/main/java/applications/WordCountApplication.java  
+>  ./dataflow/src/main/java/applications/WordCountApplication.java  
 
 OR
 
-> team-3b/dataflow/src/main/java/applications/WordCountApplicationWithMigration.java
+> ./dataflow/src/main/java/applications/WordCountApplicationWithMigration.java
 
 click 'run' button  
 **Warning: the CPU and memory may reach 100% during execution**
